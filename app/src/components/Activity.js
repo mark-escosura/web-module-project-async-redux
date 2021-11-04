@@ -1,35 +1,43 @@
-import React from 'react';
-import axios from 'axios'
+import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux'
 
+import { getActivity , fetchError } from '../actions/activityActions';
+
 const Activity = ({ activity, isFetching, error, dispatch }) => {
 
+    useEffect(()=> {
+        dispatch(getActivity());
+      }, []);
+
+    if (error) {
+        return <h2>Oh no! Error 🥺 </h2>
+    }
     
-    axios.get('https://www.boredapi.com/api/activity/')
-        .then(resp => {
-            console.log(resp.data);
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    if (isFetching) {
+        return <h2>Currently looking for something to do.. 🧐</h2>
+    }
+
+    const handleClick = () => {
+        dispatch(getActivity());
+    }
 
     return (
         <div className='container'>
-            <h1>Activity 😁</h1>
-            <h2>**Activity goes here **</h2>
-            <button className='button'>What To Do?</button>
+            <h1>Give me something to do! 😁</h1>
+            <h2><strong>Activity:</strong> {activity.activity}</h2>
+            <h3>Type: {activity.type}</h3>
+            <button className='activityButton' onClick={handleClick} >What To Do?</button>
             <p>⬆ Every time I click this button ⬆ it will give me a new activity ⬆</p>
         </div>
-        
     )
 }
 
-// const mapStateToProps = (state) => {
-//     console.log(state)
-//     return{
-//         activity: state.activity
-//     }
-// }
+const mapStateToProps = (state) => {
+    // console.log(state.activity);
+    return{
+        activity: state.activity
+    }
+}
 
-export default Activity;
+export default connect(mapStateToProps)(Activity);

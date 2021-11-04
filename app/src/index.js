@@ -1,26 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { createStore } from 'redux';
-// import { Provider } from 'react-redux';
+import { applyMiddleware, createStore } from 'redux';
+import { Provider } from 'react-redux';
 
-// import logger from 'redux-logger';
-// import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 
-// import { reducer } from './reducers';
+import { reducer } from './reducers/activityReducer';
 
 import './index.css';
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';
 
-// const store = createStore(reducer) // what does this do?
+const store = createStore(reducer, applyMiddleware(logger, thunk)) // what does this do?
 
 ReactDOM.render(
 
   <React.StrictMode>
-    {/* <Provider store={store}> */}
+    <Provider store={store}>
       <App />
-    {/* </Provider> */}
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 
